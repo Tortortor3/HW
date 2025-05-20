@@ -1,3 +1,8 @@
+# วิธีการ RUN
+1. เปิด terminal
+2. ใช้คำสั่ง npm install เอา node_modules มาก่อน
+3. npm run dev
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

@@ -7,6 +7,7 @@ import axios from "axios";
 // Recommended
 function App() {
   const [products, setProducts] = useState<any[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<string>("");
 
   useEffect(() => {
     axios
@@ -20,6 +21,16 @@ function App() {
       });
   }, []);
 
+  const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedProduct(event.target.value);
+  };
+
+  const filteredProducts = selectedProduct
+    ? products.filter(product => product.category.name === selectedProduct)
+    : products;
+  
+  const uniqueCategories = Array.from(new Set(products.map(product => product.category.name)));
+
   return (
     <div className="root">
       {/* <h1 id="title" className="">
@@ -27,12 +38,26 @@ function App() {
       </h1>
       <Login /> 
       <Form />*/}
-      <h1 style={{color:"white" , paddingBottom:"15px"}}>ThumDD Shop</h1>
+      <h1 style={{color:"white" , paddingBottom:"15px", fontSize:"100px"}}>ThumDD Shop</h1>
+      <p style={{color:"white" , paddingBottom:"5px"}}>Selected Product Type</p>
+      
+      <select onChange={handleFilterChange} value={selectedProduct} style={{ marginBottom: "20px" }}>
+        <option value="">Select a product</option>
+        {uniqueCategories.map((category, index) => ( 
+        <option key={index} value={category}>
+          {category}
+        </option>
+      ))}
+      </select>
+      
       <div className="product-grid">
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <div className="product-card">
             <h1 >{product.title}</h1>
-            <p>{product.description}</p>
+            <h2 >price {product.category.name} baht</h2>
+            <img width = "200px" height="200px" src={product.images[0]} alt="" />
+            
+            <p style={{fontSize:"100"}}>{product.description}</p>
           </div>
         ))}
       </div>

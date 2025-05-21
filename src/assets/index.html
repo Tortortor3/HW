@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Visualization: เว็บหาคู่</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      background-color: #f9f9f9;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .chart-container {
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    canvas {
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📊 Visualization: ข้อมูลผู้ใช้เว็บหาคู่</h1>
+
+  <div class="chart-container">
+    <h2>สัดส่วนเพศ</h2>
+    <canvas id="genderChart"></canvas>
+  </div>
+
+  <div class="chart-container">
+    <h2>ช่วงอายุผู้ใช้</h2>
+    <canvas id="ageChart"></canvas>
+  </div>
+
+  <div class="chart-container">
+    <h2>ความสำเร็จในการจับคู่</h2>
+    <canvas id="matchSuccessChart"></canvas>
+  </div>
+
+  <script>
+    async function loadData() {
+      const res = await fetch('./users_data.json');
+      const data = await res.json();
+
+      const genderCount = {};
+      const ageGroups = {
+        '18-25': 0,
+        '26-35': 0,
+        '36-45': 0,
+        '46-60': 0
+      };
+      const matchSuccess = {
+        '0': 0,
+        '1-5': 0,
+        '6-15': 0,
+        '16+': 0
+      };
+
+      data.forEach(user => {
+        // Gender
+        genderCount[user.เพศ] = (genderCount[user.เพศ] || 0) + 1;
+
+        // Age groups
+        const age = user.อายุ;
+        if (age <= 25) ageGroups['18-25']++;
+        else if (age <= 35) ageGroups['26-35']++;
+        else if (age <= 45) ageGroups['36-45']++;
+        else ageGroups['46-60']++;
+
+        // Match success
+        const success = user['จำนวนความสำเร็จในการจับคู่'];
+        if (success === 0) matchSuccess['0']++;
+        else if (success <= 5) matchSuccess['1-5']++;
+        else if (success <= 15) matchSuccess['6-15']++;
+        else matchSuccess['16+']++;
+      });
+
+      // Gender chart
+      new Chart(document.getElementById('genderChart'), {
+        type: 'pie',
+        data: {
+          labels: Object.keys(genderCount),
+          datasets: [{
+            data: Object.values(genderCount),
+            backgroundColor: ['#FF6384', '#36A2EB']
+          }]
+        },
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: 'สัดส่วนเพศของผู้ใช้'
+            }
+          }
+        }
+      });
+
+      // Age chart
+      new Chart(document.getElementById('ageChart'), {
+        type: 'bar',
+        data: {
+          labels: Object.keys(ageGroups),
+          datasets: [{
+            label: 'จำนวนผู้ใช้',
+            data: Object.values(ageGroups),
+            backgroundColor: '#4CAF50'
+          }]
+        },
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: 'ช่วงอายุของผู้ใช้'
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+      // Match success chart
+      new Chart(document.getElementById('matchSuccessChart'), {
+        type: 'bar',
+        data: {
+          labels: Object.keys(matchSuccess),
+          datasets: [{
+            label: 'จำนวนผู้ใช้',
+            data: Object.values(matchSuccess),
+            backgroundColor: '#FF9800'
+          }]
+        },
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: 'จำนวนความสำเร็จในการจับคู่'
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    loadData();
+  </script>
+
+</body>
+</html>

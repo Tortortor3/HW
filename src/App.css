@@ -1,82 +1,73 @@
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px; 
-  width: 100%;
-  height: auto;
-}
-
-.product-card {
-  border: 1px solid #cccccc; 
-  padding: 16px; 
-  border-radius: 8px; 
-  background-color: #fcf1c8;
-  width: 100%;
-  height: auto;
-}
-
+/* ✅ โครงสร้างหลัก */
 body {
-  background-color: #5e4b8c;
+  background: linear-gradient(135deg, #2a7a2a, #4caf50); /* เขียวเข้ม > เขียวสด */
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  color: #e8f5e9;
 }
 
-h1 {
-  color: blueviolet;
-}
-
-/*
- #root {
+#root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2rem 1rem;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* ✅ หัวเรื่อง */
+h1 {
+  color: #a5d6a7;
+  text-shadow: 1px 1px 3px rgba(0, 77, 0, 0.5);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* ✅ ตัวเลือก filter */
+select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0, 77, 0, 0.4);
+  margin-bottom: 24px;
+  font-size: 1rem;
+  background-color: #a3d9a5;
+  color: #0b3d0b;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* ✅ ข้อความทั่วไป */
+p {
+  color: #d0f0c0;
 }
 
-.card {
-  padding: 2em;
+/* ✅ กริดสินค้าแบบ Responsive */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* ✅ ยืดหยุ่น */
+  gap: 20px;
+  justify-items: center;
+  margin-top: 1rem;
 }
 
-.read-the-docs {
-  color: #888;
-} */
-#root {
+/* ✅ การ์ดสินค้า */
+.product-card {
+  background: linear-gradient(145deg, #c8facc, #a3d9a5);
+  box-shadow: 0 8px 16px rgba(0, 77, 0, 0.3);
+  border-radius: 16px;
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
   width: 100%;
-  min-height: 100vh;
-  margin: 0 auto;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
+  max-width: 320px;
   text-align: center;
 }
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 100, 0, 0.5);
+}
+
+.product-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 12px;
 }
